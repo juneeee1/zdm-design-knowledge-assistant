@@ -1,0 +1,30 @@
+# 值得买设计规范 AI 知识导航
+
+版本状态：项目初始化，卡片模块已导入，其他模块待建设。
+
+## 必读
+
+- 项目与使用边界：AGENTS.md
+- 值得买设计语言总说明：design.md
+- 知识库地图：knowledge/README.md
+- 协作与确认：governance/协作与确认流程.md
+
+## 按问题读取
+
+- 为什么这样设计：knowledge/01-设计原则/
+- 颜色、字体、间距、圆角、图标、图片：knowledge/02-基础规范/
+- 卡片和其他可复用组件：knowledge/03-组件规范/
+- 首页、好价、搜索、我的、关注、发布、商业化：knowledge/04-页面模式/
+- 交互、状态、内容文案：knowledge/05-交互与内容/
+- 研发字段、组件映射、测试点：knowledge/06-研发与测试映射/
+
+## 卡片资料
+
+- 卡片总索引：source/card-finder/knowledge/index.md
+- 单卡片档案：source/card-finder/knowledge/cards/{卡片编号}.md
+- 页面与卡片数据：source/card-finder/data/
+- 页面层级规则：source/card-finder/knowledge/page-taxonomy.md
+- 可安装查询 Skill：packages/zdm-card-knowledge/
+
+回答卡片问题时必须注明知识版本和证据等级。缺少人工确认时，应明确说明“Figma 可追溯”或“待确认”。
+

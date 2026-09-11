@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 2,
+  "scannedAt": "2026-09-01T15:40:00+08:00",
+  "sources": {
+    "cardLibrary": {
+      "fileKey": "bAgan5FT4BJsOkwGpIeGVM",
+      "name": "值得买卡片库",
+      "excludedPages": [
+        "封面"
+      ],
+      "scannedPages": 11
+    },
+    "designSummary": {
+      "fileKey": "lrTnmEfWndqzFHY2kAqgHN",
+      "name": "v11.1.95-新版本汇总",
+      "excludedPages": [
+        "封面"
+      ],
+      "scannedPages": 17
+    }
+  },
+  "counts": {
+    "cards": 261,
+    "cardsWithPreview": 261,
+    "pages": 419,
+    "usages": 486,
+    "confirmedUsages": 393,
+    "reviewUsages": 93,
+    "pageAtlases": 112,
+    "traceableUsages": 393,
+    "inferredUsages": 93,
+    "humanReviewedUsages": 0,
+    "rejectedUsages": 0,
+    "authoritativeLibraryCards": 260,
+    "pageOnlyCardReferences": 1
+  },
+  "rules": {
+    "confirmed": "页面内存在名称可明确对应卡片编号的 Figma 实例，或完整卡片节点本身使用图片填充。",
+    "review": "普通 Frame/命名节点命中，或只命中卡片内部图片、头像、动画等资源名。",
+    "excludedNumericFalsePositives": [
+      "20000（满减文案）",
+      "22520（价格文案）"
+    ],
+    "evidenceLevels": {
+      "human-reviewed": "设计或研发已经明确确认并记录。",
+      "figma-traceable": "Figma 中存在完整组件实例或明确可追溯节点，是强证据但不等于人工确认。",
+      "inferred": "普通 Frame、资源命名或视觉相似，需要人工复核。",
+      "unknown": "当前缺少足够信息。"
+    },
+    "defaultLifecycle": "除明确废弃或置灰外，卡片默认按使用中保留。",
+    "defaultPlatform": "跨端默认共用编号与规范，例外进入待确认。",
+    "idMapping": "设计编号与研发编号一一对应。",
+    "retention": "长期无人确认的内容默认保留，不自动删除或废弃。"
+  },
+  "notes": [
+    "卡片库共识别 260 个权威编号标题，并为全部编号定位独立卡片本体和干净预览。",
+    "页面侧存在 20017 的明确使用节点，但卡片库未发现权威编号标题，因此保留为待归档异常。",
+    "第一期只覆盖 Figma；研发代码/API 编号留作后续交叉校验。"
+  ],
+  "knowledgeVersion": "2026.09.01-r2",
+  "knowledgeStatus": "ready-for-design-review"
+}

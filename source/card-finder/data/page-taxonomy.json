@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "definition": {
+    "page": "页面库中的一级业务入口；同一入口只展示一次。",
+    "scene": "同一页面中，因用户任务或业务目的不同而形成的子场景。",
+    "state": "页面与用户任务不变，仅数据、人群、视觉、过程或实验条件发生变化。",
+    "frame": "Figma 中的原始画板或容器，只作为设计证据，不直接等同于业务页面。"
+  },
+  "sourcePolicy": {
+    "verifiedUsage": "只有在页面设计稿中出现可追溯卡片实例，才计为已验证使用。",
+    "intendedUsage": "卡片旁备注中明确写出的使用位置，计为适用线索；没有页面设计稿时标记为待补设计稿。",
+    "libraryGrouping": "卡片库所属分组只作为分类参考，不能单独证明页面已经使用该卡片。",
+    "editorGrouping": "卡片库编辑器分组映射到发布页；未在发布页面稿中出现时标记为归类待验证，不计为已验证使用。",
+    "commercialGrouping": "商业化为跨页面业务集合；汇总商业分组及权威卡片标题明确标为广告的资产。保留首页、搜索、我的等原有适用关系；业务归类不等于页面使用已验证。",
+    "rawFrame": "所有原始 Frame 永久保留，用于追溯、复核和补充页面状态。"
+  },
+  "pageFamilies": [
+    {
+      "id": "home",
+      "name": "首页",
+      "description": "首页主信息流、频道、榜单、社区详情与兴趣入口",
+      "annotationKeywords": ["首页", "社区频道", "社区信息流", "社区详情", "社区", "兴趣聚合", "兴趣页", "全部兴趣", "兴趣频道"],
+      "libraryPageNames": ["首页", "社区", "兴趣聚合"],
+      "preferredPatterns": ["1.1-首页-首页-默认态", "首页-首页-默认态", "首页-默认态"]
+    },
+    {
+      "id": "deals",
+      "name": "好价",
+      "description": "好价频道、Feed 与国补等子场景",
+      "annotationKeywords": ["好价频道", "好价feed", "好价 feed", "好价", "国补频道", "国补"],
+      "libraryPageNames": ["好价"],
+      "preferredPatterns": ["1.1-好价-默认态", "好价-默认态"]
+    },
+    {
+      "id": "mine",
+      "name": "我的",
+      "description": "我的首页、签到、勋章、个人主页、设置、收藏与我的发布",
+      "annotationKeywords": ["我的发布", "签到中心", "签到", "我的勋章", "勋章", "个人主页", "我的收藏", "收藏页", "设置", "我的页面", "我的-", "我的页"],
+      "libraryPageNames": ["我的"],
+      "preferredPatterns": ["1.1-我的-已登录-默认态", "我的-已登录-默认态", "我的-默认态"]
+    },
+    {
+      "id": "search",
+      "name": "搜索",
+      "description": "搜索首页、结果、筛选及意图识别",
+      "annotationKeywords": ["搜索结果页", "搜索结果", "搜索页", "搜索"],
+      "libraryPageNames": ["搜索"],
+      "preferredPatterns": ["1.1-搜索-默认态", "搜索-默认态"]
+    },
+    {
+      "id": "following",
+      "name": "关注",
+      "description": "关注信息流与关注管理",
+      "annotationKeywords": ["关注页", "关注频道", "关注feed", "关注 feed", "关注流", "位置-首页新用户、关注新用户"],
+      "libraryPageNames": ["关注"],
+      "preferredPatterns": ["2.1-首页-关注-默认态", "关注-默认态"]
+    },
+    {
+      "id": "editor",
+      "name": "发布",
+      "description": "内容发布和编辑流程",
+      "annotationKeywords": ["编辑器", "发布器", "发布页面"],
+      "libraryPageNames": ["编辑器"],
+      "classifiedLabel": "编辑器归类，页面稿待验证",
+      "preferredPatterns": ["发布-默认态"]
+    },
+    {
+      "id": "commercial",
+      "name": "商业化",
+      "description": "首页广告运营、信息流广告、搜索商业化及商家品牌等场景",
+      "annotationKeywords": ["商业化", "商业页面"],
+      "libraryPageNames": ["商业"],
+      "cardTitleKeywords": ["广告"],
+      "classifiedLabel": "商业化归类，页面稿待验证",
+      "preferredPatterns": ["5.4-首页-商业化-换肤状态下巨幕广告", "5.2-首页-商业化-换肤浅色"],
+      "scenes": [
+        { "id": "commercial-home", "name": "首页广告运营" },
+        { "id": "commercial-feed", "name": "信息流广告" },
+        { "id": "commercial-search", "name": "搜索商业化" },
+        { "id": "commercial-deals", "name": "好价商业化" },
+        { "id": "commercial-brand", "name": "商家品牌主页" },
+        { "id": "commercial-mine", "name": "我的广告" }
+      ]
+    }
+  ],
+  "hiddenFamilies": [
+    { "id": "other", "name": "其他", "reason": "第一期暂不展示，源数据继续保留" }
+  ],
+  "stateKeywords": [
+    "默认态", "默认", "常规", "基础", "暗色", "深色", "浅色", "空态", "空状态",
+    "loading", "骨架", "吸顶", "上滑", "下拉刷新", "刷新", "展开", "收起", "弹窗",
+    "新用户", "老用户", "未登录", "已登录", "主态", "客态", "换肤", "状态1", "状态2", "状态3"
+  ]
+}

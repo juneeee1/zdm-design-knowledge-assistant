@@ -1,0 +1,11 @@
+{
+  "name": "smzdm-design-ai-knowledge-base",
+  "version": "0.1.0",
+  "private": true,
+  "description": "值得买设计规范 AI 知识库",
+  "scripts": {
+    "validate": "node scripts/validate.mjs",
+    "sync:cards": "node scripts/sync-card-finder.mjs"
+  }
+}
+
