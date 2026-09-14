@@ -1,5 +1,12 @@
-.DS_Store
 node_modules/
+.DS_Store
+artifacts/
 tmp/
 dist/
-
+.env
+.env.*
+!.env.example
+.runtime/
+release/
+.vercel/
+.vercel

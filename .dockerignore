@@ -1,0 +1,10 @@
+.git
+node_modules
+.env
+.env.*
+.runtime
+.vercel
+artifacts
+tmp
+release
+dist

@@ -1,0 +1,17 @@
+{
+  "name": "zdm-design-assistant",
+  "version": "0.3.0-mvp.1",
+  "description": "值得买设计知识助手项目级安装器",
+  "type": "module",
+  "bin": {
+    "zdm-design-assistant": "bin/install.mjs"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "files": [
+    "bin",
+    "payload"
+  ],
+  "private": true
+}

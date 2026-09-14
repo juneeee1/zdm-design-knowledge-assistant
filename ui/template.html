@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>值得买设计知识库</title><style>/* STYLES */</style></head>
+<body>
+<header class="top"><div class="brand"><span class="brand-mark">值</span><div><h1>值得买设计知识库</h1><p>设计依据 · 组件档案 · 协作确认</p></div></div><div class="release"><strong>团队试用版</strong><span id="version"></span></div></header>
+<nav class="tabs" aria-label="主导航"><button data-view="library" aria-current="page">知识检索</button><button data-view="issues">待确认清单 <span id="issue-count"></span></button><button data-view="sources">来源与边界</button><button data-view="report">领导汇报</button></nav>
+<section class="metrics" id="metrics" aria-label="版本概览"></section>
+<main>
+<section id="library-view">
+<form id="search-form" class="toolbar" role="search"><input id="search" type="search" aria-label="搜索知识与卡片" placeholder="搜索编号、名称、规则或原始备注" autocomplete="off"><select id="scope" aria-label="资料范围"><option value="all">全部资料</option><option value="knowledge">精炼知识</option><option value="card">卡片证据</option></select><select id="evidence" aria-label="证据类型"><option value="all">全部证据</option><option value="figma-traceable">Figma 可追溯</option><option value="observed-web">网页观察</option><option value="proposal">工作建议</option><option value="project-policy">项目约定</option><option value="unknown">证据待补</option></select><select id="status" aria-label="确认状态"><option value="all">全部状态</option><option value="待确认">待确认</option><option value="已确认">已确认</option></select><button type="button" id="reset">重置</button></form>
+<div class="workspace"><aside id="categories" aria-label="知识分类"></aside><section class="results"><div class="result-head"><strong id="result-count" aria-live="polite"></strong><button id="compare" disabled>对比 <span id="compare-count">0</span>/2</button></div><div id="result-list"></div><div class="pagination"><button id="previous">上一页</button><span id="page-count"></span><button id="next">下一页</button></div></section><article id="detail" tabindex="-1" aria-label="档案详情"></article></div>
+</section>
+<section id="issues-view" hidden class="wide"><div class="section-heading"><div><h2>待确认清单</h2><p>本轮重点事项 · 负责人待认领</p></div><select id="priority" aria-label="问题优先级"><option value="all">全部优先级</option><option value="P0">P0</option><option value="P1">P1</option></select></div><div id="issue-list"></div></section>
+<section id="sources-view" hidden class="wide"><h2>来源与边界</h2><div id="source-list"></div></section>
+<section id="report-view" hidden class="wide"><div class="report-actions"><button id="print">打印汇报</button><a href="../docs/领导汇报.md" target="_blank" rel="noopener">Markdown 原稿</a></div><article id="report" class="prose"></article></section>
+</main>
+<footer>知识库用于查询与评审。Figma 可追溯不等于人工确认。<a href="../docs/试用指南.md" target="_blank" rel="noopener">试用与维护</a></footer>
+<script id="knowledge-data" type="application/json">/* DATA */</script><script>/* APP */</script>
+</body></html>

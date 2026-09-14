@@ -1,0 +1,63 @@
+{
+  "version": "2026.09.11-r1",
+  "sources": [
+    {
+      "id": "damo-intro",
+      "name": "DaMo 介绍页",
+      "url": "https://www.figma.com/design/VNy5gakyf4IyApJayH1mnD/DaMo-Design-System?node-id=810-5909",
+      "snapshot": "source/damo/2026-09-11-introduction.json",
+      "retrievedAt": "2026-09-11",
+      "evidence": "figma-traceable",
+      "scope": "介绍页的可读性、动效、图标说明及 811:6118 绑定变量；未扫描全库",
+      "limitation": "现行版本、适用端和负责人未确认；该节点变量不代表完整 Token 库"
+    },
+    {
+      "id": "cards",
+      "name": "卡片扫描快照",
+      "url": "https://www.figma.com/design/bAgan5FT4BJsOkwGpIeGVM/",
+      "snapshot": "packages/zdm-card-knowledge/references/catalog.json",
+      "retrievedAt": "2026-09-01",
+      "evidence": "mixed",
+      "scope": "261 条卡片、419 个 Frame、486 条关系；知识版本 2026.09.01-r2",
+      "limitation": "含 1 条页面侧待归档编号；自动生成的 engineeringId 不等于代码已核验；关系须逐条看 evidenceLevel 与 humanReview"
+    },
+    {
+      "id": "web-home",
+      "name": "值得买 PC 首页公开文本",
+      "url": "https://www.smzdm.com/",
+      "retrievedAt": "2026-09-11",
+      "evidence": "observed-web",
+      "scope": "搜索引擎返回的官网文本：导航及价格条件",
+      "limitation": "直接抓取与浏览器访问超时；不是当日完整页面截图，不支持尺寸、交互、响应式结论",
+      "snapshot": "source/web/2026-09-11-observations.md"
+    },
+    {
+      "id": "web-deals",
+      "name": "全部好价公开文本",
+      "url": "https://faxian.smzdm.com/",
+      "retrievedAt": "2026-09-11",
+      "evidence": "observed-web",
+      "scope": "搜索引擎返回的好价导航与优惠条件文本",
+      "limitation": "未登录、未执行交互；内容随时间变化，价格不作为长期样例",
+      "snapshot": "source/web/2026-09-11-observations.md"
+    },
+    {
+      "id": "project-rules",
+      "name": "项目协作约定",
+      "snapshot": "AGENTS.md",
+      "retrievedAt": "2026-09-11",
+      "evidence": "project-policy",
+      "scope": "编号、来源、确认、保留与发布边界",
+      "limitation": "是项目使用规则，不构成产品视觉规范的人工确认"
+    },
+    {
+      "id": "proposal",
+      "name": "初版工作建议",
+      "snapshot": "governance/初版使用边界.md",
+      "retrievedAt": "2026-09-11",
+      "evidence": "proposal",
+      "scope": "为试用补充的选型流程、交互建议、验收和衡量方法",
+      "limitation": "由 AI 整理，未经业务负责人批准，不得作为现行公司标准引用"
+    }
+  ]
+}

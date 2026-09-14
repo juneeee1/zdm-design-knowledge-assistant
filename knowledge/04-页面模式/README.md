@@ -4,3 +4,4 @@
 
 页面、场景、状态和 Figma Frame 的详细区分见 `../../source/card-finder/knowledge/page-taxonomy.md`。
 
+本版新增 [PC 首页内容结构](PC首页.md) 与 [PC 好价和搜索评审](PC好价与搜索评审.md)。它们不改动原始卡片页面分类；PC 与其他端不能根据名称自动映射。

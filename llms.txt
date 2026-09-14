@@ -1,6 +1,19 @@
 # 值得买设计规范 AI 知识导航
 
-版本状态：项目初始化，卡片模块已导入，其他模块待建设。
+版本状态：2026.09.11-r1 团队试用版。六层精炼档案、卡片查询、待确认清单与本地查询页面已建立；新增知识均待人工确认。
+
+## 初版入口
+
+- 使用边界：governance/初版使用边界.md
+- 机器检索：npm run query -- search <关键词>，npm run query -- get <ID>
+- 结构化索引：site/knowledge-index.json（运行 npm run build 生成）
+- 团队页面：site/index.html
+- 待确认问题：governance/issues.json
+- 来源注册：governance/sources.json
+- 领导汇报：docs/领导汇报.md
+- 试用与维护：docs/试用指南.md
+
+优先读取精炼知识，原始卡片事实仍回到扫描档案。回答须区分来源记录、工作建议、人工确认；未知值不得补猜。卡片证据版本与本版知识整理版本分别引用。
 
 ## 必读
 
@@ -27,4 +40,3 @@
 - 可安装查询 Skill：packages/zdm-card-knowledge/
 
 回答卡片问题时必须注明知识版本和证据等级。缺少人工确认时，应明确说明“Figma 可追溯”或“待确认”。
-
