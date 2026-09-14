@@ -26,6 +26,11 @@ function resolveLink(href = "", file) {
 const entries = searchEntries(data).map((e) => ({ ...e, html: e.kind === "knowledge" ? render(e.body, e.path, true) : "" }));
 const metricsMd = `# 本版验收数据\n\n由 npm run build 自动生成，请勿手工修改。\n\n知识版本：${data.version}；卡片证据版本：${data.cardVersion}。\n\n| 指标 | 数量 | 说明 |\n| --- | --- | --- |\n| 精炼知识档案 | ${data.metrics.documents} | 六层主题，均保留来源与确认信息 |\n| 重点卡片评审档案 | ${data.metrics.sampleCards} | 包含在精炼档案中，不额外相加 |\n| 已人工确认知识档案 | ${data.metrics.confirmedDocuments} | 不是 Figma 可追溯数量 |\n| 卡片记录 | ${data.metrics.cards} | 原始快照，含页面侧待归档编号 |\n| 原始页面 Frame | ${data.metrics.frames} | 不是业务页面数量 |\n| 页面关系 | ${data.metrics.relations} | 设计证据，非线上调用 |\n| Figma 可追溯关系 | ${data.metrics.traceable} | 不等于人工确认 |\n| 推断关系 | ${data.metrics.inferred} | 需复核 |\n| 人工确认关系 | ${data.metrics.humanConfirmed} | 以 humanReview 为准 |\n| 本轮待确认事项 | ${data.metrics.issues} | 不是全库所有未知问题的数量 |\n\n完整性校验与检索测试结果见实际命令输出，本文件不声称测试已经通过。PC 像素规范、完整 Token、研发映射尚未接入。\n`;
 const artifacts = new Map();
+artifacts.set("site/document-html.json", JSON.stringify(Object.fromEntries(entries.filter(e => e.kind === "knowledge").map(e => [e.id, sanitizeHtml(e.html, {
+  allowedTags: sanitizeHtml.defaults.allowedTags,
+  allowedAttributes: { a: ["href", "target", "rel"] },
+  transformTags: { a: (_tag, attrs) => ({ tagName: "a", attribs: /^https:\/\//.test(attrs.href || "") ? { href: attrs.href, target: "_blank", rel: "noopener noreferrer" } : {} }) }
+})])), null, 2) + "\n");
 artifacts.set("docs/本版验收数据.md", metricsMd);
 artifacts.set("docs/待确认清单.md", `# 待确认清单\n\n版本：${data.version}。由 governance/issues.json 生成，请勿重复维护。\n\n` + data.issues.map((i) => `## ${i.id} · ${i.title}\n\n优先级：${i.priority}；状态：${i.status}；责任角色：${i.owner}。\n\n待确认：${i.question}\n\n关闭条件：${i.resolution}\n\n试用处理：${i.interim}\n\n影响档案：${i.affects.join("、")}。\n`).join("\n"));
 const report = fs.readFileSync(path.join(root, "docs/领导汇报.md"), "utf8") + "\n\n" + metricsMd;

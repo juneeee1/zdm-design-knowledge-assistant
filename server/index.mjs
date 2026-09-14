@@ -3,10 +3,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { randomUUID, timingSafeEqual, createHash } from "node:crypto";
 import { pathToFileURL } from "node:url";
-import { root } from "../scripts/knowledge.mjs";
+import { root, readJson } from "../scripts/knowledge.mjs";
 import { createKnowledge, retrievalAnswer } from "./retrieval.mjs";
 import { answerWithModel, modelReady } from "./model.mjs";
-import { localStore, blobStore } from './store.mjs';
+import { localStore, blobStore } from "./store.mjs";
 
 const mime = {
   ".html": "text/html; charset=utf-8",
@@ -23,6 +23,7 @@ export function createApp({
   dataDir = path.resolve(root, env.DATA_DIR || ".runtime"),
 } = {}) {
   const knowledge = createKnowledge();
+  const release = readJson("governance/application-release.json");
   const store = env.VERCEL ? blobStore() : localStore(dataDir);
   const limits = new Map();
   let active = 0;
@@ -53,7 +54,8 @@ export function createApp({
     };
     try {
       const url = new URL(req.url, "http://localhost");
-      if (env.DEMO_DISABLED === 'true') return json(503, {error:'本次演示已结束'});
+      if (env.DEMO_DISABLED === "true")
+        return json(503, { error: "本次演示已结束" });
       if (url.pathname === "/healthz") return json(200, { ok: true });
       if (
         env.DEMO_PASSWORD &&
@@ -79,6 +81,8 @@ export function createApp({
             cardVersion: knowledge.data.cardVersion,
             metrics: knowledge.data.metrics,
             mode: modelReady(env) ? "ai" : "retrieval",
+            applicationVersion: release.version,
+            installerPackageUrl: release.installerUrl,
             cards: knowledge.data.catalog.cards.map((c) => ({
               id: c.id,
               title: c.canonicalName,
@@ -107,7 +111,7 @@ export function createApp({
           });
         if (
           req.method === "GET" &&
-          /^\/api\/cards\/\d{5}$/.test(url.pathname)
+          /^\/api\/cards\/\d{5,8}$/.test(url.pathname)
         ) {
           const card = knowledge.card(url.pathname.split("/").pop());
           return json(card ? 200 : 404, card || { error: "没有这个卡片编号" });
@@ -124,20 +128,31 @@ export function createApp({
         }
         if (req.method !== "POST") return json(404, { error: "接口不存在" });
         const origin = req.headers.origin;
-        const expected = env.PUBLIC_ORIGIN || `http://${req.headers.host}`;
+        const expected = env.PUBLIC_ORIGIN || (env.VERCEL ? release.website : `http://${req.headers.host}`);
         if (origin && origin !== expected)
           return json(403, { error: "来源不允许" });
         if (!String(req.headers["content-type"]).startsWith("application/json"))
           return json(415, { error: "仅支持 JSON" });
         let body;
         try {
-          if (req.body !== undefined) body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+          if (req.body !== undefined)
+            body =
+              typeof req.body === "string" ? JSON.parse(req.body) : req.body;
           else {
-            let raw = '';
-            for await (const chunk of req) { raw += chunk; if(Buffer.byteLength(raw)>24000) return json(413,{error:'输入过长'}); }
+            let raw = "";
+            for await (const chunk of req) {
+              raw += chunk;
+              if (Buffer.byteLength(raw) > 24000)
+                return json(413, { error: "输入过长" });
+            }
             body = JSON.parse(raw);
           }
-          if (!body || typeof body !== 'object' || Buffer.byteLength(JSON.stringify(body))>24000) return json(400,{error:'输入格式或长度无效'});
+          if (
+            !body ||
+            typeof body !== "object" ||
+            Buffer.byteLength(JSON.stringify(body)) > 24000
+          )
+            return json(400, { error: "输入格式或长度无效" });
         } catch {
           return json(400, { error: "输入格式无效" });
         }
@@ -151,7 +166,13 @@ export function createApp({
           )
             return json(400, { error: "请填写不超过 2000 字的问题说明" });
           const id = randomUUID();
-          await store.feedback({id,created:new Date().toISOString(),version:knowledge.data.version,record:body.record,note:body.note.trim()});
+          await store.feedback({
+            id,
+            created: new Date().toISOString(),
+            version: knowledge.data.version,
+            record: body.record,
+            note: body.note.trim(),
+          });
           return json(201, { id });
         }
         if (url.pathname !== "/api/ask")
@@ -190,8 +211,12 @@ export function createApp({
             cardVersion: knowledge.data.cardVersion,
           });
         const day = new Date().toISOString().slice(0, 10);
-        if(active >= concurrency) return json(429,{error:'AI 正忙，请稍后重试'});
-        if(!await store.reserveAI(day,dailyLimit)) return json(429,{error:'AI 试用额度已用完，仍可浏览知识库并使用自己的 Codex'});
+        if (active >= concurrency)
+          return json(429, { error: "AI 正忙，请稍后重试" });
+        if (!(await store.reserveAI(day, dailyLimit)))
+          return json(429, {
+            error: "AI 试用额度已用完，仍可浏览知识库并使用自己的 Codex",
+          });
         active++;
         const controller = new AbortController();
         res.on("close", () => controller.abort());
@@ -227,7 +252,7 @@ export function createApp({
       if (!["GET", "HEAD"].includes(req.method))
         return json(405, { error: "不支持此请求" });
       let file;
-      if (/^\/card-assets\/\d{5}\.png$/.test(url.pathname))
+      if (/^\/card-assets\/\d{5,8}\.png$/.test(url.pathname))
         file = path.join(
           root,
           "source/card-finder/assets/cards",
@@ -248,8 +273,13 @@ export function createApp({
       });
       if (req.method === "HEAD") return res.end();
       fs.createReadStream(file).pipe(res);
-    } catch(error) {
-      json(error.message==='FEEDBACK_LIMIT'?429:503, { error: error.message==='FEEDBACK_LIMIT'?'本次试用反馈已满，请导出后交管理员处理':'服务暂时不可用，请稍后重试' });
+    } catch (error) {
+      json(error.message === "FEEDBACK_LIMIT" ? 429 : 503, {
+        error:
+          error.message === "FEEDBACK_LIMIT"
+            ? "本次试用反馈已满，请导出后交管理员处理"
+            : "服务暂时不可用，请稍后重试",
+      });
     }
   });
   server.on("close", () => store.close());

@@ -6,7 +6,7 @@
   "functions": {
     "api/handler.mjs": {
       "maxDuration": 60,
-      "includeFiles": "{knowledge/**,governance/*.json,packages/zdm-card-knowledge/references/catalog.json,source/card-finder/assets/cards/*.png,dist/**}"
+      "includeFiles": "{knowledge/**,governance/*.json,packages/zdm-card-knowledge/references/catalog.json,site/document-html.json,source/card-finder/assets/cards/*.png,dist/**}"
     }
   },
   "rewrites": [{ "source": "/(.*)", "destination": "/api/handler" }]

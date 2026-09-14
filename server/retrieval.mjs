@@ -1,9 +1,12 @@
-import { loadKnowledge, searchEntries } from "../scripts/knowledge.mjs";
-import { marked } from "marked";
-import sanitizeHtml from "sanitize-html";
+import {
+  loadKnowledge,
+  searchEntries,
+  readJson,
+} from "../scripts/knowledge.mjs";
 
 export function createKnowledge() {
   const data = loadKnowledge();
+  const renderedDocuments = readJson("site/document-html.json");
   const entries = searchEntries(data);
   const cards = new Map(data.catalog.cards.map((c) => [c.id, c]));
   const dictionary = [
@@ -40,7 +43,7 @@ export function createKnowledge() {
   function query(text, limit = 8) {
     const q = text.trim().toLowerCase();
     if (!q) return [];
-    const ids = q.match(/\b\d{5}\b/g) || [];
+    const ids = q.match(/\b\d{5,8}\b/g) || [];
     const terms = [
       ...new Set([
         ...q.split(/\s+/u),
@@ -55,7 +58,7 @@ export function createKnowledge() {
           !ids.length ||
           ids.includes(e.id) ||
           ids.includes(String(e.card_id)) ||
-          ids.some((id) => e.body.includes(id)),
+          (e.kind === 'knowledge' && ids.some((id) => e.body.includes(id))),
       )
       .map((e) => {
         const title = `${e.id} ${e.name} ${e.section}`.toLowerCase();
@@ -103,24 +106,7 @@ export function createKnowledge() {
         JSON.stringify(relations)
       : entry.body;
     const html =
-      entry.kind === "knowledge"
-        ? sanitizeHtml(marked.parse(entry.body), {
-            allowedTags: sanitizeHtml.defaults.allowedTags,
-            allowedAttributes: { a: ["href", "target", "rel"] },
-            transformTags: {
-              a: (_tag, attrs) => ({
-                tagName: "a",
-                attribs: /^https:\/\//.test(attrs.href || "")
-                  ? {
-                      href: attrs.href,
-                      target: "_blank",
-                      rel: "noopener noreferrer",
-                    }
-                  : {},
-              }),
-            },
-          })
-        : "";
+      entry.kind === "knowledge" ? renderedDocuments[entry.id] || "" : "";
     return {
       id: `${entry.kind}:${entry.id}`,
       recordId: entry.id,

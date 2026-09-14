@@ -6,6 +6,3 @@ node_modules
 release
 artifacts
 tmp
-source/card-finder/data
-source/card-finder/knowledge
-source/card-finder/scripts

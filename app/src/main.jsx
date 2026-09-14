@@ -50,7 +50,12 @@ async function api(url, options = {}) {
     ...options,
     headers: { "Content-Type": "application/json", ...options.headers },
   });
-  const data = await response.json();
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("服务暂时不可用，请稍后重试");
+  }
   if (!response.ok) throw new Error(data.error || "请求失败");
   return data;
 }
@@ -584,7 +589,16 @@ function Assistant() {
                             </small>
                             <div>
                               <Tooltip title="复制需求与依据给 Codex">
-                                <Button type="text" icon={icon(Terminal)} aria-label="复制给 Codex" onClick={()=>copy(`请使用项目级 $zdm-design-assistant 处理以下需求。先调用查询脚本核验来源和版本，再给出设计评审草稿，区分事实、建议与待确认项。若尚未安装，请先使用本知识助手提供的安装命令。\n\n${exportText(t)}`)}/>
+                                <Button
+                                  type="text"
+                                  icon={icon(Terminal)}
+                                  aria-label="复制给 Codex"
+                                  onClick={() =>
+                                    copy(
+                                      `请使用项目级 $zdm-design-assistant 处理以下需求。先调用查询脚本核验来源和版本，再给出设计评审草稿，区分事实、建议与待确认项。若尚未安装，请先使用本知识助手提供的安装命令。\n\n${exportText(t)}`,
+                                    )
+                                  }
+                                />
                               </Tooltip>
                               <Tooltip title="复制评审稿">
                                 <Button
@@ -1038,12 +1052,61 @@ function Assistant() {
               ))}
             </div>
             {[
-              ['业务用途', c => <p>{c.businessContext?.purpose || '待确认'}</p>],
-              ['差异说明', c => <p>{c.differenceNotes || '没有已确认的差异说明'}</p>],
-              ['配置属性', c => <p>{c.variantPropertyDefinitions.map(p=>p.name).join('、') || '尚未记录'}<br/><small>配置属性不代表可任意组合。</small></p>],
-              ['变体记录', c => <p>{{partial:'部分扫描','not-scanned':'尚未扫描',complete:'已扫描'}[c.variantInventoryStatus] || c.variantInventoryStatus} · {c.variants.length} 条记录</p>],
-              ['原始备注', c => <details><summary>{c.annotationRecords.length} 条备注</summary>{c.annotationRecords.map((a,i)=><p key={i}>{a.text}</p>)}</details>]
-            ].map(([label,render])=><section className="compare-row" key={label}><h3>{label}</h3><div className="comparison">{compareData.map(c=><div key={c.id}>{render(c)}</div>)}</div></section>)}
+              [
+                "业务用途",
+                (c) => <p>{c.businessContext?.purpose || "待确认"}</p>,
+              ],
+              [
+                "差异说明",
+                (c) => <p>{c.differenceNotes || "没有已确认的差异说明"}</p>,
+              ],
+              [
+                "配置属性",
+                (c) => (
+                  <p>
+                    {c.variantPropertyDefinitions
+                      .map((p) => p.name)
+                      .join("、") || "尚未记录"}
+                    <br />
+                    <small>配置属性不代表可任意组合。</small>
+                  </p>
+                ),
+              ],
+              [
+                "变体记录",
+                (c) => (
+                  <p>
+                    {{
+                      partial: "部分扫描",
+                      "not-scanned": "尚未扫描",
+                      complete: "已扫描",
+                    }[c.variantInventoryStatus] ||
+                      c.variantInventoryStatus}{" "}
+                    · {c.variants.length} 条记录
+                  </p>
+                ),
+              ],
+              [
+                "原始备注",
+                (c) => (
+                  <details>
+                    <summary>{c.annotationRecords.length} 条备注</summary>
+                    {c.annotationRecords.map((a, i) => (
+                      <p key={i}>{a.text}</p>
+                    ))}
+                  </details>
+                ),
+              ],
+            ].map(([label, render]) => (
+              <section className="compare-row" key={label}>
+                <h3>{label}</h3>
+                <div className="comparison">
+                  {compareData.map((c) => (
+                    <div key={c.id}>{render(c)}</div>
+                  ))}
+                </div>
+              </section>
+            ))}
           </>
         ) : (
           <Spin />
@@ -1058,19 +1121,22 @@ function Assistant() {
         <p>项目级安装 · 使用宿主 AI 工具的模型 · 知识可离线查询</p>
         <Alert type="info" title="需要 Node.js 22.13 或更新版本" />
         <ol className="install-steps">
-          <li>下载完整知识包</li>
-          <li>在目标项目中运行安装命令</li>
+          <li>在 Codex 中打开目标项目</li>
+          <li>在项目终端运行下方命令</li>
           <li>重新打开 AI 会话，调用 zdm-design-assistant</li>
         </ol>
-        {boot.installUrl ? (
-          <Button href={boot.installUrl} icon={icon(Download)}>
+        {boot.installerPackageUrl || boot.installUrl ? (
+          <Button
+            href={boot.installerPackageUrl || boot.installUrl}
+            icon={icon(Download)}
+          >
             下载完整安装包
           </Button>
         ) : (
           <Tag>安装包尚未构建</Tag>
         )}
         <pre className="command">
-          npx /绝对路径/zdm-design-assistant.tgz install --host codex
+          {`npx --yes ${boot.installerPackageUrl || "/绝对路径/zdm-design-assistant.tgz"} install --host codex`}
         </pre>
         <p>
           安装目标：当前项目的
@@ -1078,11 +1144,13 @@ function Assistant() {
         </p>
         <Button
           onClick={() =>
-            copy("npx /绝对路径/zdm-design-assistant.tgz install --host codex")
+            copy(
+              `npx --yes ${boot.installerPackageUrl || "/绝对路径/zdm-design-assistant.tgz"} install --host codex`,
+            )
           }
           icon={icon(Copy)}
         >
-          复制命令模板
+          复制安装命令
         </Button>
       </Modal>
       <Modal

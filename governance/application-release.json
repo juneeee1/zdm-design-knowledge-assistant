@@ -1,0 +1,8 @@
+{
+  "version": "0.3.0-mvp.1",
+  "repository": "https://github.com/juneeee1/zdm-design-knowledge-assistant",
+  "website": "https://zdm-design-knowledge-assistant.vercel.app",
+  "installerUrl": "https://github.com/juneeee1/zdm-design-knowledge-assistant/releases/download/v0.3.0-mvp.1/zdm-design-assistant.tgz",
+  "installerSha256": "2b4763d80f51761e172a426a9b54282e4298ead7e27071cd890ac5b250f63877",
+  "workflow": "codex-local-skill"
+}

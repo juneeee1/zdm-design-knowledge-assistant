@@ -23,7 +23,14 @@ else {
 }
 console.log(
   JSON.stringify(
-    { version: data.version, cardVersion: data.cardVersion, results: result, sources: (data.sources || []).filter(s => result.some(e => e.source_ids?.includes(s.id))) },
+    {
+      version: data.version,
+      cardVersion: data.cardVersion,
+      results: result,
+      sources: (data.sources || []).filter((s) =>
+        result.some((e) => e.source_ids?.includes(s.id)),
+      ),
+    },
     null,
     2,
   ),

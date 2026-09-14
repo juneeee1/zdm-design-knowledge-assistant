@@ -960,7 +960,34 @@ svg {
   line-height: 1.9;
   overflow-wrap: anywhere;
 }
-.compare-row{padding:16px 0;border-top:1px solid #e9ecf0}.compare-row>h3{margin:0 0 8px;color:#858c97;font-size:12px}.compare-row .comparison{margin:0}.compare-row p{margin-bottom:0}.compare-row details{font-size:13px;line-height:1.8}.compare-row summary{cursor:pointer;color:#35749c}.compare-row details p{margin-top:10px;white-space:pre-wrap;overflow-wrap:anywhere}
+.compare-row {
+  padding: 16px 0;
+  border-top: 1px solid #e9ecf0;
+}
+.compare-row > h3 {
+  margin: 0 0 8px;
+  color: #858c97;
+  font-size: 12px;
+}
+.compare-row .comparison {
+  margin: 0;
+}
+.compare-row p {
+  margin-bottom: 0;
+}
+.compare-row details {
+  font-size: 13px;
+  line-height: 1.8;
+}
+.compare-row summary {
+  cursor: pointer;
+  color: #35749c;
+}
+.compare-row details p {
+  margin-top: 10px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 .document-rendered h1 {
   font-size: 23px;
 }

@@ -14,12 +14,14 @@ test("query finds exact card IDs, Chinese topics and preserves uncertainty", () 
   const found = k.query("比较 20040 和 20041 的差异与待确认项");
   assert.ok(found.some((s) => s.recordId === "20040"));
   assert.ok(found.some((s) => s.recordId === "20041"));
+  assert.ok(found.filter(s=>s.kind==='card').every(s=>['20040','20041'].includes(s.recordId)));
   assert.ok(k.query("字体与颜色规范").length);
   assert.equal(k.query("xyz-nonexistent-abc").length, 0);
   assert.equal(k.data.metrics.cards, 261);
   assert.equal(k.data.metrics.humanConfirmed, 0);
   assert.equal(k.card("99999"), null);
   assert.ok(k.card("20040").previewUrl);
+  assert.ok(k.query('比较 2200104 和 2200105').some(s=>s.recordId==='2200104'));
 });
 test("model output rejects fabricated citations and malformed result types", () => {
   const source = { id: "card:20040" };
@@ -86,6 +88,10 @@ test("API serves complete catalog, handles query, validates input and persists f
   const image = await get("/card-assets/20040.png");
   assert.equal(image.status, 200);
   assert.ok(Number(image.headers.get("content-length")) > 1000);
+  for(const id of ['2200104','330131','3900101']) {
+    assert.equal((await get(`/api/cards/${id}`)).status,200);
+    assert.equal((await get(`/card-assets/${id}.png`)).status,200);
+  }
   const feedback = await post("/api/feedback", {
     record: "card:20040",
     note: "test feedback",
